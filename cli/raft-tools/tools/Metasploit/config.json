@@ -1,0 +1,12 @@
+{
+	"container" : "metasploitframework/metasploit-framework",
+	"run" : {
+		"command" : "/bin/sh", 
+		"arguments" : ["-c", "echo DebugMode; while true; do sleep 100000; done;"]
+	},
+	"idle" : {
+		"command" : "/bin/sh",
+		"arguments" : ["-c", "echo DebugMode; while true; do sleep 100000; done;"]
+	},
+	"shell" : "/bin/sh"
+}
