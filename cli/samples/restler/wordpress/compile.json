@@ -32,8 +32,7 @@
   },
   "testTasks" : {
     "targetConfiguration" :{
-       "apiSpecifications" : [ "http://127.0.0.1:8080/rest-api/schema" ],
-       "endpoint" : "http://127.0.0.1:8080"
+       "apiSpecifications" : [ "http://127.0.0.1:8080/rest-api/schema" ]
     },
     "tasks": [
       {
