@@ -36,8 +36,8 @@ if __name__ == "__main__":
             if arg == 'test':
                 run(cli, os.path.join(cur_dir, "test.json"), subs), 
 
-            if arg == 'test-fuzz-lean':
-                run(cli, os.path.join(cur_dir, "test-fuzz-lean.json"), subs), 
+            if arg == 'fuzz':
+                run(cli, os.path.join(cur_dir, "fuzz.json"), subs), 
 
     except RaftJobError as ex:
         print(f'ERROR: {ex.message}')

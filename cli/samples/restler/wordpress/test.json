@@ -27,7 +27,7 @@
 
         "Shell" : "/bin/bash",
         "Run": {
-          "ShellArguments": ["-c", "sleep 90; wp core download; wp config create --dbname=exampledb --dbuser=exampleuser --dbpass=examplepass --dbhost='127.0.0.1:3306' --locale=en_US; wp core install --url=localhost --title='test' --admin_user='test' --admin_email='test@test.com' --skip-email; wp plugin install $RAFT_WORK_DIRECTORY/../../swagger-plugin/wp-api-swaggerui.1.1.1.zip --activate; cd /var/www/html; wp rewrite structure '/%year%/%monthnum%/%postname%/'; wp server --debug --host=127.0.0.1" ]
+          "ShellArguments": ["-c", "sleep 90; wp core download; wp config create --dbname=exampledb --dbuser=exampleuser --dbpass=examplepass --dbhost='127.0.0.1:3306' --locale=en_US; wp core install --url=localhost --title='test' --admin_user='test' --admin_email='test@test.com' --skip-email; wp plugin install $RAFT_WORK_DIRECTORY/../../swagger-plugin/wp-api-swaggerui.1.1.1.zip --activate; cd /var/www/html; wp rewrite structure '/%year%/%monthnum%/%postname%/'; wp server --debug --host=127.0.0.1 --port=8080" ]
         },
         "Idle" : {
           "ShellArguments" : ["-c", "echo DebugMode; while true; do sleep 100000; done;"]	
@@ -59,7 +59,7 @@
           "task": "Test",
           "runConfiguration" : {
             "useSsl" : false,
-            "inputFolderPath": "/wordpress/{compile.jobId}/compile"
+            "inputFolderPath": "/wordpress/{compile.jobId}/compile-for-test"
           }
         }
       }

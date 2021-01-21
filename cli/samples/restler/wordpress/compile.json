@@ -10,38 +10,82 @@
         "ExpectedDurationUntilReady" : "00:03:00",
 
         "Shell" : "/bin/bash",
-	"Run": {
-		"ShellArguments": ["-c", "sleep 90; wp core download; wp config create --dbname=exampledb --dbuser=exampleuser --dbpass=examplepass --dbhost='127.0.0.1:3306' --locale=en_US; wp core install --url=localhost --title='test' --admin_user='test' --admin_email='test@test.com' --skip-email; wp plugin install $RAFT_WORK_DIRECTORY/../../swagger-plugin/wp-api-swaggerui.1.1.1.zip --activate; cd /var/www/html; wp rewrite structure '/%year%/%monthnum%/%postname%/'; wp server --debug --host=127.0.0.1"]
-	},
-	"Idle" : {
-		"ShellArguments" : ["-c", "echo DebugMode; while true; do sleep 100000; done;"]	
-	},
+        "Run": {
+          "ShellArguments": ["-c", "sleep 90; wp core download; wp config create --dbname=exampledb --dbuser=exampleuser --dbpass=examplepass --dbhost='127.0.0.1:3306' --locale=en_US; wp core install --url=localhost --title='test' --admin_user='test' --admin_email='test@test.com' --skip-email; wp plugin install $RAFT_WORK_DIRECTORY/../../swagger-plugin/wp-api-swaggerui.1.1.1.zip --activate; cd /var/www/html; wp rewrite structure '/%year%/%monthnum%/%postname%/'; wp server --debug --host=127.0.0.1 --port=8080"]
+        },
+        "Idle" : {
+          "ShellArguments" : ["-c", "echo DebugMode; while true; do sleep 100000; done;"]	
+        },
         "OutputFolder" : "wordpress"
       },
       {
      	"Container" : "mysql:5.7",
-	"Ports" : [3306, 33060],
-	"EnvironmentVariables": {
-	
-	      "MYSQL_DATABASE": "exampledb",
-	      "MYSQL_USER": "exampleuser",
-	      "MYSQL_PASSWORD": "examplepass",
-	      "MYSQL_RANDOM_ROOT_PASSWORD": "1"
-	}
+        "Ports" : [3306, 33060],
+        "EnvironmentVariables": {
+          "MYSQL_DATABASE": "exampledb",
+          "MYSQL_USER": "exampleuser",
+          "MYSQL_PASSWORD": "examplepass",
+          "MYSQL_RANDOM_ROOT_PASSWORD": "1"
+        }
       }
     ]
   },
   "testTasks" : {
     "targetConfiguration" :{
-       "apiSpecifications" : [ "http://localhost:8080/rest-api/schema" ],
-       "endpoint" : "http://localhost:8080"
+       "apiSpecifications" : [ "http://127.0.0.1:8080/rest-api/schema" ],
+       "endpoint" : "http://127.0.0.1:8080"
     },
     "tasks": [
       {
         "toolName": "RESTler",
-        "outputFolder": "compile",
+        "outputFolder": "compile-for-test",
         "toolConfiguration": {
-          "task": "Compile"
+          "task": "Compile",
+          "compileConfiguration" : {
+            "customDictionary": {
+              "customPayload" : {
+                "context" : ["view", "embed", "edit"],
+                "page" : ["1"],
+                "per_page" : ["100"],
+                "force" : ["false"],
+                "locale" : ["en_US"],
+                "email" : ["test@test.net"],
+                "start_of_week" : ["0"],
+                "use_smilies" : ["true"],
+                "default_category" : ["1"],
+                "posts_per_page" : ["10"],
+                "default_ping_status" : ["open", "closed"],
+                "default_comment_status" : ["open", "closed"]
+              }
+            }
+          }
+        }
+      },
+      {
+        "toolName": "RESTler",
+        "outputFolder": "compile-for-fuzz",
+        "toolConfiguration": {
+          "task": "Compile",
+          "compileConfiguration" : {
+            "mutationsSeed" : 100,
+
+            "customDictionary": {
+              "customPayload" : {
+                "context" : ["view", "embed", "edit"],
+                "page" : ["1"],
+                "per_page" : ["100"],
+                "force" : ["false"],
+                "locale" : ["en_US"],
+                "email" : ["test@test.net"],
+                "start_of_week" : ["0"],
+                "use_smilies" : ["true"],
+                "default_category" : ["1"],
+                "posts_per_page" : ["10"],
+                "default_ping_status" : ["open", "closed"],
+                "default_comment_status" : ["open", "closed"]
+              }
+            }
+          }
         }
       }
     ]
