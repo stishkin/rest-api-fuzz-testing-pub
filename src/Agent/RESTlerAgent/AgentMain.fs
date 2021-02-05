@@ -345,8 +345,9 @@ let createRESTlerCompilerConfiguration (workDirectory: string) (grammar: Grammar
     }
 
 
+let valuesLength = 10
 let inline makeValues< 'T > (stdGen) =
-    FsCheck.Gen.eval 100 stdGen (FsCheck.Gen.arrayOfLength 10 FsCheck.Arb.generate< 'T >)
+    FsCheck.Gen.eval 100 stdGen (FsCheck.Gen.arrayOfLength valuesLength FsCheck.Arb.generate< 'T >)
 
 
 let genMutationsDictionary(rnd: int64) : Raft.RESTlerTypes.Compiler.MutationsDictionary=
@@ -356,7 +357,7 @@ let genMutationsDictionary(rnd: int64) : Raft.RESTlerTypes.Compiler.MutationsDic
     let strings =
         if IO.File.Exists blns then
             let allStrings = Json.Default.deserializeFile<string array> blns
-            let indices = FsCheck.Gen.eval 100 stdGen (FsCheck.Gen.arrayOfLength 10 (FsCheck.Gen.choose(0, allStrings.Length - 1)))
+            let indices = FsCheck.Gen.eval 100 stdGen (FsCheck.Gen.arrayOfLength valuesLength (FsCheck.Gen.choose(0, allStrings.Length - 1)))
             indices |> Array.map (fun i -> allStrings.[i])
         else
             makeValues<FsCheck.NonEmptyString>(stdGen) |> Array.map (fun s -> s.Get)
